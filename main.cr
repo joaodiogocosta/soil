@@ -1,12 +1,12 @@
 require "./lib/soil"
 
-# router = Router.new
-# router.add("get", "/api/v2")
-# context = "context"
-# router.find("get", "/api/v1").call(context)
-# router.find("get", "/api/v2").call(context)
+class PostsIndexAction < Soil::Action
+  def call(context)
+    p "PostsIndexAction"
+  end
+end
 
-class Users < App
+class Users < Soil::App
   before do
     p "before Users"
   end
@@ -28,7 +28,11 @@ class Users < App
   end
 end
 
-class V1 < App
+class Posts < Soil::App
+  get "", PostsIndexAction.new
+end
+
+class V1 < Soil::App
   before do
     p "before V1"
   end
@@ -40,11 +44,12 @@ class V1 < App
   mount "users", Users
 end
 
-class V2 < App
+class V2 < Soil::App
   mount "users", Users
+  mount "posts", Posts
 end
 
-class Api < App
+class Api < Soil::App
   mount "v1", V1
   mount "v2", V2
 end
@@ -52,4 +57,5 @@ end
 # Api.find(:get, 'not_found').call
 # Api.find(:get, '').call
 Api.find("post", "/v1/users").call("context")
+Api.find("get", "/v2/posts").call("context")
 # Api.find(:get, '/v2/users/').call
