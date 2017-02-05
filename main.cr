@@ -1,30 +1,30 @@
 require "./lib/soil"
 
 class PostsIndexAction < Soil::Action
-  def call(context)
+  def call(req, res)
     p "PostsIndexAction"
   end
 end
 
 class Users < Soil::App
-  before do
+  before do |req, res|
     p "before Users"
   end
 
-  after do
+  after do |req, res|
     p "after Users"
   end
 
-  get "" do
+  get "" do |req, res|
     p "beautiful get endpoint"
   end
 
-  post "" do
+  post "" do |req, res|
     p "beautiful post endpoint"
   end
 
-  get "" do
-    "empty"
+  get "" do |req, res|
+    p "empty"
   end
 end
 
@@ -33,11 +33,11 @@ class Posts < Soil::App
 end
 
 class V1 < Soil::App
-  before do
+  before do |req, res|
     p "before V1"
   end
 
-  after do
+  after do |req, res|
     p "after V1"
   end
 
@@ -56,6 +56,7 @@ end
 
 # Api.find(:get, 'not_found').call
 # Api.find(:get, '').call
-Api.find("post", "/v1/users").call("context")
-Api.find("get", "/v2/posts").call("context")
+# Api.find("post", "/v1/users").call("context")
+# Api.find("get", "/v2/posts").call("context")
 # Api.find(:get, '/v2/users/').call
+Api.new.run

@@ -27,7 +27,7 @@ class Router
     found = @routes.detect do |route|
       (route.method == method) && (route.path == path)
     end
-    found || Proc.new { p 'not found' }
+    found || NilAction.new
   end
 end
 

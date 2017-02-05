@@ -4,7 +4,7 @@ module Soil
       @@before_callbacks
     end
 
-    def before(&hook : String ->)
+    def before(&hook : Http::Request, Http::Response ->)
       @@before_callbacks << hook
     end
 
@@ -12,7 +12,7 @@ module Soil
       @@after_callbacks
     end
 
-    def after(&hook : String ->)
+    def after(&hook : Http::Request, Http::Response ->)
       @@after_callbacks << hook
     end
   end

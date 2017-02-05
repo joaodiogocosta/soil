@@ -2,9 +2,9 @@ module Soil
   class Route
     getter method : String
     getter path : String
-    getter callables = [] of Action | (String ->)
+    getter callables = [] of Action | (Http::Request, Http::Response ->)
 
-    def initialize(@method, @path, callables = [] of Action | (String ->))
+    def initialize(@method, @path, callables)
       @callables += callables
     end
 
@@ -12,8 +12,8 @@ module Soil
       (method == @method) && (path == @path)
     end
 
-    def call(context : String)
-      @callables.each &.call(context)
+    def call(request, response)
+      @callables.each &.call(request, response)
     end
   end
 end

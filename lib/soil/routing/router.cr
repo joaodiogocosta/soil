@@ -6,7 +6,7 @@ module Soil
       @routes = [] of Route
     end
 
-    def add(method, path, callables = [] of Action | (String ->))
+    def add(method, path, callables)
       @routes << Route.new(method, format_path(path), callables)
     end
 
@@ -18,7 +18,7 @@ module Soil
     end
 
     def nil_action
-      ->(context : String) { p "not found" }
+      NilAction.new
     end
 
     def format_path(path)

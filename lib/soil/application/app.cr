@@ -5,9 +5,26 @@ module Soil
     extend HooksDSL
     extend RoutingDSL
 
-    @@before_callbacks = [] of String ->
-    @@after_callbacks = [] of String ->
+    @@before_callbacks = [] of Http::Request, Http::Response ->
+    @@after_callbacks = [] of Http::Request, Http::Response ->
     @@router = Router.new
+
+    def initialize
+      @server = HTTP::Server.new(
+        "127.0.0.1",
+        4000,
+        [
+          HTTP::LogHandler.new,
+          HTTP::ErrorHandler.new,
+          Http::MainHandler.new(self.class)
+        ]
+      )
+    end
+
+    def run
+      puts "Server running ..."
+      @server.listen
+    end
 
     def self.routes
       @@router.routes
