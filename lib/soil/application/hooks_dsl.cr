@@ -1,19 +1,19 @@
 module Soil
   module HooksDSL
-    def before_callbacks
-      @@before_callbacks
+    def before_hooks
+      @@before_hooks
     end
 
     def before(&hook : Http::Request, Http::Response ->)
-      @@before_callbacks << hook
+      @@before_hooks << hook
     end
 
-    def after_callbacks
-      @@after_callbacks
+    def after_hooks
+      @@after_hooks
     end
 
     def after(&hook : Http::Request, Http::Response ->)
-      @@after_callbacks << hook
+      @@after_hooks << hook
     end
   end
 end

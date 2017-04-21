@@ -5,8 +5,8 @@ module Soil
     extend HooksDSL
     extend RoutingDSL
 
-    @@before_callbacks = [] of Http::Request, Http::Response ->
-    @@after_callbacks = [] of Http::Request, Http::Response ->
+    @@before_hooks = [] of Http::Request, Http::Response ->
+    @@after_hooks = [] of Http::Request, Http::Response ->
     @@router = Router.new
 
     def initialize
@@ -31,7 +31,7 @@ module Soil
     end
 
     def self.wrap_within_self_callables(callables)
-      before_callbacks + callables + after_callbacks
+      before_hooks + callables + after_hooks
     end
 
     def self.mount_route(method : String, path : String, callables)
@@ -39,8 +39,8 @@ module Soil
       @@router.add(method, path, all_callables)
     end
 
-    def self.find(method, path)
-      @@router.find(method, path)
+    def self.find(request)
+      @@router.find(request)
     end
   end
 end

@@ -1,19 +1,27 @@
 module Soil
   module RoutingDSL
-    def get(path : String, &block : Http::Request, Http::Response ->)
-      mount_route("GET", "/", [block])
+    def get(path : String, &handler : Http::Request, Http::Response ->)
+      mount_route("GET", path, [handler])
     end
 
-    def get(path : String, action : Action)
-      mount_route("GET", "/", [action])
+    def get(path : String, handler : Action)
+      mount_route("GET", path, [handler])
     end
 
-    def post(path : String, &block : Http::Request, Http::Response ->)
-      mount_route("POST", "/", [block])
+    def get(path : String, handlers : Array(Handler))
+      mount_route("GET", path, handlers)
     end
 
-    def post(path : String, action : Action)
-      mount_route("POST", "/", [action])
+    def post(path : String, &handler : Http::Request, Http::Response ->)
+      mount_route("POST", path, [handler])
+    end
+
+    def post(path : String, handler : Action)
+      mount_route("POST", path, [handler])
+    end
+
+    def post(path : String, handlers : Array(Handler))
+      mount_route("GET", path, handlers)
     end
 
     def mount(path : String, mountable_class : App.class)

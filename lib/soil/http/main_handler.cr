@@ -10,7 +10,7 @@ module Soil
       def call(raw_context)
         context = build_context(raw_context)
         @app_class
-          .find(context.request.method, context.request.path)
+          .find(context.request)
           .call(context.request, context.response)
       end
 

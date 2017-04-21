@@ -80,14 +80,6 @@ class App
 end
 
 class Users < App
-  before do
-    p 'before Users'
-  end
-
-  after do
-    p 'after Users'
-  end
-
   get '' do
     p 'beautiful endpoint'
   end
@@ -98,6 +90,8 @@ class Users < App
 end
 
 class V1 < App
+  mount 'users', Users
+
   before do
     p 'before V1'
   end
@@ -105,8 +99,6 @@ class V1 < App
   after do
     p 'after V1'
   end
-
-  mount 'users', Users
 end
 
 class V2 < App
@@ -116,9 +108,32 @@ end
 class Api < App
   mount 'v1', V1
   mount 'v2', V2
+
+  content_type :json
 end
+
+
+namespace 'api' do
+  namespace 'v1' do
+    resources 'users'
+  end
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Api.find(:get, 'not_found').call
 # Api.find(:get, '').call
 Api.find(:get, '/v1/users/').call
 # Api.find(:get, '/v2/users/').call
+#

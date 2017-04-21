@@ -23,8 +23,8 @@ class Users < Soil::App
     p "beautiful post endpoint"
   end
 
-  get "" do |req, res|
-    p "empty"
+  get ":id" do |req, res|
+    p "User id"
   end
 end
 

@@ -10,19 +10,22 @@ module Soil
       @routes << Route.new(method, format_path(path), callables)
     end
 
-    def find(method, path)
+    # TODO: it would be great to have an option for a custom
+    # matcher passed by the user. Eventually a class or a lambda
+    # or both
+    def find(request)
       found = @routes.find do |route|
-        route.matches?(method, path.chomp("/"))
+        route.matches?(request)
       end
-      found || nil_action
+      found || nil_route
     end
 
-    def nil_action
-      NilAction.new
+    private def nil_route
+      Route.new("", "", [NilAction.new])
     end
 
-    def format_path(path)
-      path.lchomp("/").chomp("/").insert(0, "/")
+    private def format_path(path)
+      path.lchop("/").chomp("/").insert(0, "/")
     end
   end
 end
