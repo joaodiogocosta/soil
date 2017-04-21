@@ -18,8 +18,8 @@ module Soil
         )
       end
 
-      def build_handler(&block ->)
-        first_handler = Proc(Http::Request, Http::Response, Nil).new do |_, _|
+      def build_handler(&block)
+        Proc(Http::Request, Http::Response, Nil).new do |_, _|
           block.call
           nil
         end

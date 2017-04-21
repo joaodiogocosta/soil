@@ -1,8 +1,6 @@
 require "../../spec_helper"
 
 module SoilSpec::Routing::Route
-  include Soil
-
   describe Soil::Route do
     describe "matching" do
       it "matches HTTP method" do
@@ -94,14 +92,8 @@ module SoilSpec::Routing::Route
 
     describe "#call" do
       it "calls callables" do
-        first_handler = Proc(Http::Request, Http::Response, Nil).new do |_, _|
-          Mocr::Spy.call
-          nil
-        end
-        second_handler = Proc(Http::Request, Http::Response, Nil).new do |_, _|
-          Mocr::Spy.call
-          nil
-        end
+        first_handler = build_handler { Mocr::Spy.call }
+        second_handler = build_handler { Mocr::Spy.call }
         route = build_route("get", "/", [first_handler, second_handler])
 
         request = build_example_request("get", "/")
