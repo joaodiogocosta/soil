@@ -1,6 +1,8 @@
 require "http/server"
+require "logger"
 require "json"
 
+require "./config"
 require "./http/*"
 require "./routing/*"
 require "./application/*"

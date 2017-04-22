@@ -1,30 +1,29 @@
 require "./hooks_dsl"
+require "./config_dsl"
 
 module Soil
   class App
     extend HooksDSL
     extend RoutingDSL
+    extend ConfigDSL
 
     @@namespace = ""
     @@before_hooks = [] of Http::Request, Http::Response ->
     @@after_hooks = [] of Http::Request, Http::Response ->
     @@router = Router.new
+    @@config = Config.new
+    @@logger = Logger.new(STDOUT)
 
     def initialize
       @server = HTTP::Server.new(
-        "127.0.0.1",
-        4000,
+        @@config.host,
+        @@config.port,
         [
           HTTP::LogHandler.new,
           HTTP::ErrorHandler.new,
           Http::MainHandler.new(self.class)
         ]
       )
-    end
-
-    def run
-      puts "Server running ..."
-      @server.listen
     end
 
     def self.routes
@@ -47,6 +46,21 @@ module Soil
 
     def self.namespace(name)
       @@namespace = name
+    end
+
+    def self.configuration
+      @@config
+    end
+
+    def self.logger
+      @@logger
+    end
+
+    def run
+      self.class.logger.info(
+        "An app emerged from soil running on #{self.class.configuration.host}:#{@server.port}"
+      )
+      @server.listen
     end
   end
 end

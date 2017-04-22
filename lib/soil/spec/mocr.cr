@@ -1,7 +1,6 @@
 module Soil
   module Spec
     module Mocr
-      # BLOG POST
       class Double
         def initialize
           @calls = {} of String => Int32

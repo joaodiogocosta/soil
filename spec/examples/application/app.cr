@@ -12,6 +12,17 @@ module SoilSpec::Application::App
   end
 
   describe App do
+    context "#configuration" do
+      describe "#configure" do
+        it "modifies configuration values" do
+          ExampleApp.configure do |config|
+            config.port = 3000
+          end
+          ExampleApp.configuration.port.should eq 3000
+        end
+      end
+    end
+
     context "#hooks" do
       describe "#before" do
         it "registers before hooks" do
@@ -84,11 +95,6 @@ module SoilSpec::Application::App
 
         ExampleApp.mount("/", ChildApp)
         ExampleApp.routes.size.should eq number_of_routes + number_of_child_routes
-      end
-    end
-
-    describe "#find" do
-      pending "finds an existing route" do
       end
     end
   end

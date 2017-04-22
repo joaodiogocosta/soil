@@ -5,14 +5,14 @@ module Soil
         Soil::Route.new(method, path, handlers)
       end
 
-      def build_example_request(method, path, host = "http://example.org")
+      def build_request(method, path, host = "http://example.org")
         resource = host + path
         Soil::Http::Request.new(
           HTTP::Request.new(method, resource)
         )
       end
 
-      def build_example_response
+      def build_response
         Soil::Http::Response.new(
           HTTP::Server::Response.new(IO::Memory.new)
         )

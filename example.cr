@@ -16,15 +16,15 @@ class Users < Soil::App
   end
 
   get "" do |req, res|
-    p "beautiful get endpoint"
+    p "awesome get endpoint"
   end
 
   post "" do |req, res|
-    p "beautiful post endpoint"
+    p "awesome post endpoint"
   end
 
   get ":id" do |req, res|
-    p "User id"
+    p "Fetching user id"
   end
 end
 
@@ -60,10 +60,4 @@ class App < Soil::App
   mount "api", Api
 end
 
-
-# Api.find(:get, 'not_found').call
-# Api.find(:get, '').call
-# Api.find("post", "/v1/users").call("context")
-# Api.find("get", "/v2/posts").call("context")
-# Api.find(:get, '/v2/users/').call
 App.new.run
