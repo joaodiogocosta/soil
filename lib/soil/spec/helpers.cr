@@ -18,6 +18,14 @@ module Soil
         )
       end
 
+      def build_raw_context(method = "get", path = "")
+        url = "http://example.org/#{path}"
+        HTTP::Server::Context.new(
+          HTTP::Request.new(method, url),
+          HTTP::Server::Response.new(IO::Memory.new)
+        )
+      end
+
       def build_handler(&block)
         Proc(Http::Request, Http::Response, Nil).new do |_, _|
           block.call

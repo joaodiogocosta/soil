@@ -92,14 +92,13 @@ module SoilSpec::Routing::Route
 
     describe "#call" do
       it "calls callables" do
-        first_handler = build_handler { Mocr::Spy.call }
-        second_handler = build_handler { Mocr::Spy.call }
-        route = build_route("get", "/", [first_handler, second_handler])
+        handler1 = build_handler { Mocr::Spy.call }
+        handler2 = build_handler { Mocr::Spy.call }
+        route = build_route("get", "/", [handler1, handler2])
 
         request = build_example_request("get", "/")
         response = build_example_response
         route.call(request, response)
-
         Mocr::Spy.calls.should eq 2
       end
     end

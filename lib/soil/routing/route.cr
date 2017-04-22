@@ -26,7 +26,7 @@ module Soil
     end
 
     private def matches_method?(request)
-      request.method == @method
+      request.method.downcase == @method.downcase
     end
 
     private def advance_to(reader, char)

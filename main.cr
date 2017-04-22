@@ -50,13 +50,20 @@ class V2 < Soil::App
 end
 
 class Api < Soil::App
+  namespace "public"
+
   mount "v1", V1
   mount "v2", V2
 end
+
+class App < Soil::App
+  mount "api", Api
+end
+
 
 # Api.find(:get, 'not_found').call
 # Api.find(:get, '').call
 # Api.find("post", "/v1/users").call("context")
 # Api.find("get", "/v2/posts").call("context")
 # Api.find(:get, '/v2/users/').call
-Api.new.run
+App.new.run
