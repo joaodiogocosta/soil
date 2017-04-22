@@ -8,6 +8,23 @@ It is inspired by the most well known Ruby and Javascript web frameworks, inheri
 
 Soil is still a work in progress with a lot of missing features, but it will be constantly updated until it reaches a stable version.
 
+## Instalation
+
+Add Soil to `shard.yml`:
+
+```
+dependencies:
+  soil:
+    github: joaodiogocosta/soil
+    branch: master
+```
+
+And then:
+
+```
+$ crystal deps
+```
+
 ## Example
 
 TODO

@@ -1,4 +1,4 @@
-require "./lib/soil"
+require "./src/soil"
 
 class PostsIndexAction < Soil::Action
   def call(req, res)

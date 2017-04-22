@@ -9,4 +9,7 @@ require "./application/*"
 require "./action/*"
 require "./*"
 
-alias Handler = Soil::Action | (Soil::Http::Request, Soil::Http::Response ->)
+module Soil
+  alias Handler = Soil::Action | (Soil::Http::Request, Soil::Http::Response ->)
+end
+
