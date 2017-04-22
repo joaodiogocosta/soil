@@ -12,6 +12,10 @@ Soil is still a work in progress with a lot of missing features, but it will be 
 
 TODO
 
+## Requirements
+
+Crystal - Please refer to http://crystal-lang.org/docs/installation for instructions for your operating system.
+
 ## License
 
 MIT License
