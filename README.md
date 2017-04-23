@@ -10,7 +10,7 @@ It is inspired by the most well known Ruby and Javascript web frameworks, inheri
 
 Soil is still a work in progress with a lot of missing features, but it will be constantly updated until it reaches a stable version.
 
-## Instalation
+## Installation
 
 Add Soil to `shard.yml`:
 
@@ -21,7 +21,7 @@ dependencies:
     branch: master
 ```
 
-And then:
+And then run:
 
 ```
 $ crystal deps
@@ -29,10 +29,14 @@ $ crystal deps
 
 ## Basic Example
 
+The following is a basic example that defines a `GET /posts` endpoint and responds with JSON.
+
 ```crystal
+# blog_app.cr
+
 class BlogApp < Soil::App
   get "posts" do |req, res|
-    posts = [{ "id" => 1, "title" => "Lorem Ipsum" }]
+    posts = [...]
     res.json(posts)
   end
 end
@@ -40,22 +44,155 @@ end
 BlogApp.new.run
 ```
 
-## Other Examples
+And then run:
 
-### Composition
+```
+$ crystal blog_app.cr
+```
+
+## Table of Contents
+
+* [Routes](#routes)
+  * [Definition](#definition)
+  * [Handlers](#handlers)
+  * [Request](#request)
+  * [Params](#params)
+  * [Response](#response)
+  * [Hooks](#hooks)
+  * [Namespaces](#namespaces)
+  * [Nested Routes](#nested-routes)
+* [Configuration](#configuration)
+
+## Routes
+
+### Definition
+
+Defining routes is extremely easy.
+
+First, define a class that acts as a routes container, such as a Controller does in other web frameworks, and then define an arbitrary amount of routes by using methods such as `get` and passing a block handler that accepts `req` (request) and `res` (response) as arguments.
 
 ```crystal
-class Posts < Soil::App
+class BlogApp < Soil::App
   get "/" do |req, res|
-    posts = [{ "id" => 1, "title" => "Lorem Ipsum" }]
-    res.json(posts)
+    # ...
+  end
+
+  post "/" do |req, res|
+    # ...
+  end
+end
+```
+
+### Handlers
+
+A Route accepts two different types of handlers, crystal's built-in [Proc](https://crystal-lang.org/docs/syntax_and_semantics/literals/proc.html) and [Action](#action).
+
+#### Proc
+
+A `Proc` is the simplest handler. To use it, simply pass in a block that accepts `req` (request) and `res` (response) as arguments:
+
+```crystal
+class BlogApp < Soil::App
+  get "/" do |req, res|
+    # ...
+  end
+end
+```
+
+#### Action
+
+`Action` is a basic class that inherit from `Soil::Action`, which is just an absctract class that ensures that a `call` method is implemented:
+
+```crystal
+class PostsIndexAction < Soil::Action
+  def call(req, res)
+    @posts = [...]
+    res.json(@posts)
   end
 end
 
-class BlogApp < Soil::App
-  mount "/posts", Posts
+class PostsApp < Soil::App
+  get "/", PostsIndexAction.new
 end
 ```
+
+This is particularly useful for endpoints that incorporate a considerable amount of operations, such as an enpoint that creates a new User account:
+
+```crystal
+class CreateUserAction < Soil::Action
+  def initialize
+    @email_sender = EmailSender.new
+  end
+
+  def call(req, res)
+    user = create_user(req.params["user"])
+
+    if user
+      send_welcome_email(user)
+      res.json(user)
+    else
+      res.status_code = 400
+      res.json("message" => "Could not create User")
+    end
+  end
+
+  private def create_user(attributes)
+    User.create(attributes)
+  end
+
+  private def send_welcome_email(user)
+    @email_sender.send(:welcome_email, user.email)
+  end
+end
+```
+
+And then use it in a Route:
+
+```crystal
+class BlogApp < Soil::App
+  get "/", CreateUserAction.new
+end
+```
+
+#### Multiple Handlers
+
+Routes can have multiple handlers. `Proc` and `Action` can be combined in arrays:
+
+```crystal
+class LogAction < Soil::Action
+  def call(req, res)
+    # Log something to STDOUT
+  end
+end
+
+class PostsIndexAction < Soil::Action
+  def call(req, res)
+    @posts = [...]
+    res.json(@posts)
+  end
+end
+
+class PostsApp < Soil::App
+  get "/", [
+    LogAction.new,
+    PostsIndexAction.new,
+    -> (req : Soil::Http::Request, res : Soil::Http::Response) {
+      # ...
+    }]
+end
+```
+
+### Request
+
+TODO
+
+### Params
+
+TODO
+
+### Response
+
+TODO
 
 ### Hooks
 
@@ -70,34 +207,11 @@ class Posts < Soil::App
     pp res.status_code # print status code after handler
   end
 
-  get "/" do |req, res|
-    posts = [{ "id" => 1, "title" => "Lorem Ipsum" }]
-    res.json(posts)
-  end
+  # ...
 end
 ```
 
-### Use Classes As Handlers
-
-Route handlers can be extracted to their own class, which is useful to implement complex endpoints with lots of logic, causing the route definition to look much more clean.
-
-```crystal
-class PostsIndex < Soil::Action
-  def initialize
-    @posts = [{ "id" => 1, "title" => "Lorem Ipsum" }]
-  end
-
-  def call(req, res)
-    res.json(@posts)
-  end
-end
-
-class Posts < Soil::App
-  get "/", PostsIndex
-end
-```
-
-### Routing Namespaces
+### Namespaces
 
 The following wil prepend `blog` to all routes, hence `/blog/posts`:
 
@@ -106,11 +220,35 @@ class BlogApp < Soil::App
   namespace "blog"
 
   get "posts" do |req, res|
-    posts = [{ "id" => 1, "title" => "Lorem Ipsum" }]
+    posts = [...]
     res.json(posts)
   end
 end
 ```
+
+Namespaces are propagated to all routes.
+
+### Configuration
+
+TODO
+
+### Nested Routes
+
+TODO
+
+```crystal
+class Posts < Soil::App
+  get "/" do |req, res|
+    posts = [...]
+    res.json(posts)
+  end
+end
+
+class BlogApp < Soil::App
+  mount "/posts", Posts
+end
+```
+
 
 ## Requirements
 
