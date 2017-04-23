@@ -60,6 +60,7 @@ $ crystal blog_app.cr
   * [Response](#response)
   * [Hooks](#hooks)
   * [Namespaces](#namespaces)
+  * [Nested Routes](#nested-routes)
 * [Configuration](#configuration)
 
 ## Routes
@@ -155,9 +156,7 @@ end
 
 #### Multiple Handlers
 
-Routes can have multiple handlers.
-
-`Proc`s and `Action`s can be combined in arrays:
+Routes can have multiple handlers. `Proc` and `Action` can be combined in arrays:
 
 ```crystal
 class LogAction < Soil::Action
@@ -233,7 +232,7 @@ Namespaces are propagated to all routes.
 
 TODO
 
-### Composition
+### Nested Routes
 
 TODO
 
