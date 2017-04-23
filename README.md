@@ -4,6 +4,8 @@ Soil is a simple yet feature-rich web framework written in Crystal.
 
 It is inspired by the most well known Ruby and Javascript web frameworks, inheriting the completeness of Ruby on Rails, the clarity and readability of ExpressJS and the simplicity of Sinatra.
 
+[TODO: CI badge]
+
 ## Current state
 
 Soil is still a work in progress with a lot of missing features, but it will be constantly updated until it reaches a stable version.
@@ -12,7 +14,7 @@ Soil is still a work in progress with a lot of missing features, but it will be 
 
 Add Soil to `shard.yml`:
 
-```
+```yaml
 dependencies:
   soil:
     github: joaodiogocosta/soil
@@ -25,13 +27,98 @@ And then:
 $ crystal deps
 ```
 
-## Example
+## Basic Example
 
-TODO
+```crystal
+class BlogApp < Soil::App
+  get "posts" do |req, res|
+    posts = [{ "id" => 1, "title" => "Lorem Ipsum" }]
+    res.json(posts)
+  end
+end
+
+BlogApp.new.run
+```
+
+## Features
+
+### Composition
+
+```crystal
+class Posts < Soil::App
+  get "/" do |req, res|
+    posts = [{ "id" => 1, "title" => "Lorem Ipsum" }]
+    res.json(posts)
+  end
+end
+
+class BlogApp < Soil::App
+  mount "/posts", Posts
+end
+```
+
+### Hooks
+
+```crystal
+class Posts < Soil::App
+
+  before do |req, res|
+    pp req.params # print params before handler
+  end
+
+  after do |req, res|
+    pp res.status_code # print status code after handler
+  end
+
+  get "/" do |req, res|
+    posts = [{ "id" => 1, "title" => "Lorem Ipsum" }]
+    res.json(posts)
+  end
+end
+```
+
+### Use Classes As Handlers
+
+Route handlers can be extracted to their own class, which is useful to implement complex endpoints with lots of logic, causing the route definition to look much more clean.
+
+```crystal
+class PostsIndex < Soil::Action
+  def initialize
+    @posts = [{ "id" => 1, "title" => "Lorem Ipsum" }]
+  end
+
+  def call(req, res)
+    res.json(@posts)
+  end
+end
+
+class Posts < Soil::App
+  get "/", PostsIndex
+end
+```
+
+### Routing Namespaces
+
+The following wil prepend `blog` to all routes, hence `/blog/posts`:
+
+```crystal
+class BlogApp < Soil::App
+  namespace "blog"
+
+  get "posts" do |req, res|
+    posts = [{ "id" => 1, "title" => "Lorem Ipsum" }]
+    res.json(posts)
+  end
+end
+```
 
 ## Requirements
 
 Crystal - Please refer to http://crystal-lang.org/docs/installation for instructions for your operating system.
+
+## Contributing
+
+TODO
 
 ## License
 
