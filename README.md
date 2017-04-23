@@ -29,10 +29,14 @@ $ crystal deps
 
 ## Basic Example
 
+The following is a basic example that defines a `GET /posts` endpoint and responds with JSON.
+
 ```crystal
+# blog_app.cr
+
 class BlogApp < Soil::App
   get "posts" do |req, res|
-    posts = [{ "id" => 1, "title" => "Lorem Ipsum" }]
+    posts = [...]
     res.json(posts)
   end
 end
@@ -40,14 +44,46 @@ end
 BlogApp.new.run
 ```
 
-## Other Examples
+And then run:
+
+```
+$ crystal blog_app.cr
+```
+
+## Table of Contents
+
+* [Routes](#routes)
+  * [Definition](#definition)
+  * [Conditions](#definition)
+  * [Request](#request)
+  * [Params](#response)
+
+## Routes
+
+### Definition
+
+Defining routes is extremely easy.
+
+First, define a class that acts as a routes container, such as controller does in other web frameworks, and then define an arbitrary amount of routes by using methods such as `get` and passing a block handler that accepts `req` (request) and `res` (response) as arguments.
+
+```crystal
+class BlogApp < Soil::App
+  get "/" do |req, res|
+    # ...
+  end
+
+  post "/" do |req, res|
+    # ...
+  end
+end
+```
 
 ### Composition
 
 ```crystal
 class Posts < Soil::App
   get "/" do |req, res|
-    posts = [{ "id" => 1, "title" => "Lorem Ipsum" }]
+    posts = [...]
     res.json(posts)
   end
 end
@@ -71,7 +107,7 @@ class Posts < Soil::App
   end
 
   get "/" do |req, res|
-    posts = [{ "id" => 1, "title" => "Lorem Ipsum" }]
+    posts = [...]
     res.json(posts)
   end
 end
@@ -84,7 +120,7 @@ Route handlers can be extracted to their own class, which is useful to implement
 ```crystal
 class PostsIndex < Soil::Action
   def initialize
-    @posts = [{ "id" => 1, "title" => "Lorem Ipsum" }]
+    @posts = [...]
   end
 
   def call(req, res)
@@ -106,7 +142,7 @@ class BlogApp < Soil::App
   namespace "blog"
 
   get "posts" do |req, res|
-    posts = [{ "id" => 1, "title" => "Lorem Ipsum" }]
+    posts = [...]
     res.json(posts)
   end
 end
