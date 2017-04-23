@@ -1,3 +1,5 @@
+require "../../spec_helper"
+
 module SoilSpec::MainHandler
   class ExampleApp < Soil::App
     get "hey" do
