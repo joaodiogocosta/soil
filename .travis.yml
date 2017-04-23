@@ -1,2 +1,5 @@
 language: crystal
 script: crystal spec/run.cr
+notifications:
+  email:
+    on_success: never
