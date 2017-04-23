@@ -29,7 +29,9 @@ class Users < Soil::App
 end
 
 class Posts < Soil::App
-  get "", PostsIndexAction.new
+  get "", [PostsIndexAction.new, -> (req : Soil::Http::Request, res : Soil::Http::Response) {
+    # ...
+  }]
 end
 
 class V1 < Soil::App
