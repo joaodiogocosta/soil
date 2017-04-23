@@ -1,6 +1,6 @@
 # Soil
 
-Soil is a simple yet feature-rich web framework written in Crystal.
+Soil is a Web Framework written in Crystal optimized for productivity and extensibility.
 
 [![Build Status](https://travis-ci.org/joaodiogocosta/soil.svg?branch=master)](https://travis-ci.org/joaodiogocosta/soil)
 
@@ -40,7 +40,7 @@ end
 BlogApp.new.run
 ```
 
-## Features
+## Other Examples
 
 ### Composition
 
