@@ -55,7 +55,6 @@ $ crystal blog_app.cr
 * [Routes](#routes)
   * [Definition](#definition)
   * [Handlers](#handlers)
-  * [Request](#request)
   * [Params](#params)
   * [Response](#response)
   * [Hooks](#hooks)
@@ -182,19 +181,41 @@ class PostsApp < Soil::App
 end
 ```
 
-### Request
-
-TODO
-
 ### Params
 
-TODO
+#### URL Named Parameters
+
+URL named parameters are captured and accessible via `req.params`:
+
+```crystal
+class BlogApp < Soil::App
+  get "/posts/:post_id/comments/:comment_id" do |req, res|
+    req.params["post_id"] # => "45"
+    req.params["comment_id"] # => "87"
+  end
+end
+```
 
 ### Response
 
-TODO
+#### JSON
+
+Soil has built-in support for JSON responses. The following will call `to_json` on the object passed in as argument and write to the response body.
+
+```crystal
+class Api < Soil::App
+  get "posts" do |req, res|
+    posts = [...]
+    res.json(posts)
+  end
+end
+```
+
+This method will also set the `Content-Type` header to `application/json`.
 
 ### Hooks
+
+Hooks are evaluated before or after each request within the same context of the request. They run before/after every request defined within the App or within mounted Apps.
 
 ```crystal
 class Posts < Soil::App
@@ -228,16 +249,31 @@ end
 
 Namespaces are propagated to all routes.
 
-### Configuration
-
-TODO
-
 ### Nested Routes
 
-TODO
+Nested Routes are the foundation of Soil's extensibility features.
+
+Soil Apps can be combined to create complex applications of multiple endpoints with multiple levels of nesting.
 
 ```crystal
+class Users < Soil::App
+  get "/" do |req, res|
+    users = [...]
+    res.json(users)
+  end
+end
+
+class Comments < Soil::App
+  get "/" do |req, res|
+    # ...
+    req.params["post_id"] => # 231
+    # ...
+  end
+end
+
 class Posts < Soil::App
+  mount ":post_id/comments", CommentsApp
+
   get "/" do |req, res|
     posts = [...]
     res.json(posts)
@@ -245,10 +281,24 @@ class Posts < Soil::App
 end
 
 class BlogApp < Soil::App
-  mount "/posts", Posts
+  namespace "blog"
+
+  mount "/users", UsersApp
+  mount "/posts", PostsApp
 end
 ```
 
+This will generate the following routes:
+
+`GET /blog/users`
+
+`GET /blog/posts`
+
+`GET /blog/posts/:post_id/comments`
+
+### Configuration
+
+TODO
 
 ## Requirements
 
@@ -256,7 +306,13 @@ Crystal - Please refer to http://crystal-lang.org/docs/installation for instruct
 
 ## Contributing
 
-TODO
+Everyone is invited to make Soil a better project:
+
+1. Fork it ( https://github.com/joaodiogocosta/soil/fork )
+2. Create your feature branch (git checkout -b my-new-feature)
+3. Commit your changes (git commit -am 'Add some feature')
+4. Push to the branch (git push origin my-new-feature)
+5. Create a new Pull Request
 
 ## License
 
