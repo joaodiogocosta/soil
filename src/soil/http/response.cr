@@ -6,6 +6,7 @@ module Soil
       end
 
       def json(object)
+        @response.content_type = Soil::Http::ContentTypes.json
         object.to_json(@response)
       end
 
