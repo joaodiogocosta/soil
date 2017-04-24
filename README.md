@@ -298,7 +298,18 @@ This will generate the following routes:
 
 ### Configuration
 
-TODO
+As of now, Soil accepts configuration options for the following parameters:
+
+```crystal
+class BlogApp < Soil::App
+  configure do |config|
+    config.host = "example.org"
+    config.port = "8080"
+  end
+
+  # ...
+end
+```
 
 ## Requirements
 
