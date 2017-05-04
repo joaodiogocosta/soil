@@ -76,7 +76,7 @@ module Soil
             end
           end
 
-          request.params[param_name] = param
+          request.params.url[param_name] = param
 
           # Named parameter is in the end of the path
           if !@reader.has_next? && !path_reader.has_next?

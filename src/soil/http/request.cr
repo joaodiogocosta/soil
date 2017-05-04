@@ -1,11 +1,11 @@
 module Soil
   module Http
     class Request
-      getter params
+      getter params : Params
 
       def initialize(request : HTTP::Request)
         @request = request
-        @params = {} of String => String
+        @params = Params.parse(request)
       end
 
       forward_missing_to @request
