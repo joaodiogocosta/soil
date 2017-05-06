@@ -77,15 +77,24 @@ module SoilSpec::Routing::Route
           route = build_route("get", "/users/:id/")
           req = build_request("get", "/users/12345/")
           route.matches?(req)
-          req.params["id"].should eq "12345"
+          req.params.url["id"].should eq "12345"
         end
 
         it "stores multiple parameters" do
           route = build_route("get", "/users/:user_id/posts/:post_id")
           req = build_request("get", "/users/12345/posts/6789")
           route.matches?(req)
-          req.params["user_id"].should eq "12345"
-          req.params["post_id"].should eq "6789"
+          req.params.url["user_id"].should eq "12345"
+          req.params.url["post_id"].should eq "6789"
+        end
+      end
+
+      describe "with query parameters" do
+        it "makes them available through #params.query" do
+          route = build_route("get", "/")
+          req = build_request("get", "/?search=term")
+          route.matches?(req)
+          req.params.query["search"].should eq "term"
         end
       end
     end

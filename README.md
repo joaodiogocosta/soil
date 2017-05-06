@@ -105,8 +105,8 @@ end
 ```crystal
 class PostsIndexAction < Soil::Action
   def call(req, res)
-    @posts = [...]
-    res.json(@posts)
+    posts = [...]
+    res.json(posts)
   end
 end
 
@@ -166,8 +166,8 @@ end
 
 class PostsIndexAction < Soil::Action
   def call(req, res)
-    @posts = [...]
-    res.json(@posts)
+    posts = [...]
+    res.json(posts)
   end
 end
 
@@ -183,15 +183,51 @@ end
 
 ### Params
 
-#### URL Named Parameters
+#### URL
 
-URL named parameters are captured and accessible via `req.params`:
+URL named parameters are captured and accessible via `req.params.url`:
 
 ```crystal
 class BlogApp < Soil::App
   get "/posts/:post_id/comments/:comment_id" do |req, res|
-    req.params["post_id"] # => "45"
-    req.params["comment_id"] # => "87"
+    req.params.url["post_id"] # => "45"
+    req.params.url["comment_id"] # => "87"
+  end
+end
+```
+
+#### Query
+
+Query parameters are accessible via `req.params.query`:
+
+```crystal
+class BlogApp < Soil::App
+  get "/posts?search=crystal" do |req, res|
+    req.params.query["search"] # => "crystal"
+  end
+end
+```
+
+#### JSON
+
+JSON parameters are captured from the body and accessible via `req.params.json`.
+
+Given the following JSON payload:
+
+```json
+{
+  "post": {
+    "title": "Soil is pure awesomeness!"
+  }
+}
+```
+
+Here's how you would access the previous values:
+
+```crystal
+class BlogApp < Soil::App
+  post "/posts" do |req, res|
+    req.params.json["post"]["title"] # => "Soil is pure awesomeness!"
   end
 end
 ```
