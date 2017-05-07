@@ -20,6 +20,11 @@ module Soil
         object.to_s(@response)
       end
 
+      def render(view_klass, data)
+        @response.content_type = Soil::Http::ContentTypes.html
+        view_klass.new(data).to_s(@response)
+      end
+
       forward_missing_to @response
     end
   end

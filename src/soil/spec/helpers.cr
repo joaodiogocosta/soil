@@ -17,9 +17,9 @@ module Soil
         HTTP::Request.new(method, resource)
       end
 
-      def build_response
+      def build_response(io = IO::Memory.new)
         Soil::Http::Response.new(
-          HTTP::Server::Response.new(IO::Memory.new)
+          HTTP::Server::Response.new(io)
         )
       end
 
