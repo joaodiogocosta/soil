@@ -57,9 +57,14 @@ $ crystal blog_app.cr
   * [Handlers](#handlers)
   * [Params](#params)
   * [Response](#response)
+    * [JSON](#json)
+    * [Render Templates](#render-templates)
+    * [Inline HTML](#inline-html)
+    * [Text](#text)
   * [Hooks](#hooks)
   * [Namespaces](#namespaces)
   * [Nested Routes](#nested-routes)
+* [Views](#views)
 * [Configuration](#configuration)
 
 ## Routes
@@ -249,7 +254,21 @@ end
 
 This method will set the `Content-Type` header to `application/json`.
 
-#### Html
+#### Render Templates
+
+Render any template (HTML or others) by calling `render` on the response object and passing any `View` class. Read more about views [here](#views).
+
+```crystal
+class MyApp < Soil::App
+  get "/" do |req, res|
+    res.render(IndexView)
+  end
+end
+```
+
+This method will set the `Content-Type` header to `text/html`.
+
+#### Inline HTML
 
 For inline HTML:
 
@@ -359,6 +378,55 @@ This will generate the following routes:
 `GET /blog/posts`
 
 `GET /blog/posts/:post_id/comments`
+
+### Views
+
+Views and templating engines are a crucial part of every web framework. Soil's approach is to provide enough flexibility to the developer while enforcing good practices, such as having a reasonably well-defined data structure.
+
+First create a new file that will act as the template. Soil uses Crystal's built-in templating engine [ECR](https://crystal-lang.org/api/ECR.html):
+
+```html
+(index.html.ecr)
+
+<p>I Love <%= name %>!</p>
+```
+
+Then declare a new class that will act as the data container for the view
+template:
+
+```crystal
+class IndexView
+  include Soil::View
+
+  def initialize(data)
+    @name = data["name"]
+  end
+
+  def name
+    @name
+  end
+
+  template "index.html.ecr"
+end
+```
+
+Views are plain Crystal objects, you are free to implement them as you find more suitable to your needs, just remember to make publicly accessible the methods that are used in the template (`name` in this case).
+
+Ultimately, reference it in your request handler by calling `render` just like any `text` or `JSON` response:
+
+```crystal
+class MyApp < Soil::App
+  get "/" do |req, res|
+    res.render(IndexView, { "name" => "Crystal" })
+  end
+end
+```
+
+The result will be:
+
+```
+<p>I love Crystal!<p>
+```
 
 ### Configuration
 
