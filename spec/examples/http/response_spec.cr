@@ -6,6 +6,11 @@ module SoilSpec::Http::Response
       Mocr::Spy.call
       json.string("")
     end
+
+    def to_s(io : IO)
+      Mocr::Spy.call
+      super
+    end
   end
 
   describe Soil::Http::Response do
@@ -20,6 +25,21 @@ module SoilSpec::Http::Response
         object = Obj.new
         res = build_response
         res.json(object)
+        Mocr::Spy.calls.should eq 1
+      end
+    end
+
+    describe "#text" do
+      it "sets the content type to text/plain" do
+        res = build_response
+        res.text("Soil says hi!")
+        res.headers["Content-Type"].should eq "text/plain"
+      end
+
+      it "calls #to_s on the object" do
+        object = Obj.new
+        res = build_response
+        res.text(object)
         Mocr::Spy.calls.should eq 1
       end
     end

@@ -10,6 +10,7 @@ module Soil
       end
 
       define_content_type "json", "application/json"
+      define_content_type "text", "text/plain"
     end
   end
 end
