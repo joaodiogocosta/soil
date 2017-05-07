@@ -222,7 +222,7 @@ Given the following JSON payload:
 }
 ```
 
-Here's how you would access the previous values:
+Here's how you would access its values:
 
 ```crystal
 class BlogApp < Soil::App
@@ -248,6 +248,20 @@ end
 ```
 
 This method will also set the `Content-Type` header to `application/json`.
+
+#### Text
+
+For simple plain text responses:
+
+```crystal
+class Api < Soil::App
+  get "posts" do |req, res|
+    res.text("Soil says hi!")
+  end
+end
+```
+
+This method will also set the `Content-Type` header to `text/plain`.
 
 ### Hooks
 
