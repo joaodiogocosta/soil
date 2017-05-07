@@ -9,6 +9,7 @@ module Soil
         end
       end
 
+      define_content_type "html", "text/html"
       define_content_type "json", "application/json"
       define_content_type "text", "text/plain"
     end
