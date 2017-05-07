@@ -5,6 +5,11 @@ module Soil
         @response = response
       end
 
+      def html(str)
+        @response.content_type = Soil::Http::ContentTypes.html
+        @response << str
+      end
+
       def json(object)
         @response.content_type = Soil::Http::ContentTypes.json
         object.to_json(@response)

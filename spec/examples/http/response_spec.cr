@@ -14,6 +14,14 @@ module SoilSpec::Http::Response
   end
 
   describe Soil::Http::Response do
+    describe "#html" do
+      it "sets the content type to text/html" do
+        res = build_response
+        res.html("<html></html>")
+        res.headers["Content-Type"].should eq "text/html"
+      end
+    end
+
     describe "#json" do
       it "sets the content type to application/json" do
         res = build_response

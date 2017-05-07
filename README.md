@@ -247,21 +247,35 @@ class Api < Soil::App
 end
 ```
 
-This method will also set the `Content-Type` header to `application/json`.
+This method will set the `Content-Type` header to `application/json`.
+
+#### Html
+
+For inline HTML:
+
+```crystal
+class HtmlApp < Soil::App
+  get "/" do |req, res|
+    res.html("<html></html>")
+  end
+end
+```
+
+This method will set the `Content-Type` header to `text/html`.
 
 #### Text
 
 For simple plain text responses:
 
 ```crystal
-class Api < Soil::App
-  get "posts" do |req, res|
+class TextApp < Soil::App
+  get "/" do |req, res|
     res.text("Soil says hi!")
   end
 end
 ```
 
-This method will also set the `Content-Type` header to `text/plain`.
+This method will set the `Content-Type` header to `text/plain`.
 
 ### Hooks
 
