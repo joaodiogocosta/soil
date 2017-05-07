@@ -6,7 +6,9 @@ module SoilSpec::Application::App
   class ChildApp < App; end
   class ExampleApp < App
   end
-  class ExampleAction < Action
+  class ExampleAction
+    include Action
+
     def call(request, response)
     end
   end

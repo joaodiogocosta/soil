@@ -1,5 +1,7 @@
 module Soil
-  class NilAction < Action
+  class NilAction
+    include Action
+
     def call(request, response)
       response.status_code = Http::Statuses::NotFound.code
     end

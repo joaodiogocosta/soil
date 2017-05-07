@@ -1,5 +1,5 @@
 module Soil
-  abstract class Action
+  module Action
     abstract def call(request, response)
   end
 end
