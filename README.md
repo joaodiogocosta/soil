@@ -64,7 +64,7 @@ $ crystal blog_app.cr
   * [Hooks](#hooks)
   * [Namespaces](#namespaces)
   * [Nested Routes](#nested-routes)
-* [Views](#views)
+* [Views and Layouts](#views-and-layouts)
 * [Configuration](#configuration)
 
 ## Routes
@@ -387,7 +387,7 @@ This will generate the following routes:
 
 `GET /blog/posts/:post_id/comments`
 
-### Views
+### Views and Layouts
 
 Views and templating engines are a crucial part of every web framework. Soil's approach is to provide enough flexibility to the developer while enforcing good practices, such as having a reasonably well-defined data structure.
 
@@ -414,9 +414,14 @@ class IndexView
     @name
   end
 
-  template "index.html.ecr"
+  def render(io : IO)
+    render_template io, "index.html.ecr"
+  end
 end
 ```
+
+It's mandatory to implement a `render(io : IO)` method. You can return whatever
+you want, in this case we will return a pre-compiled template.
 
 Views are plain Crystal objects, you are free to implement them as you find more suitable to your needs, just remember to make publicly accessible the methods that are used in the template (`name` in this case).
 
@@ -435,6 +440,34 @@ The result will be:
 ```
 <p>I love Crystal!<p>
 ```
+
+#### Layouts
+
+Soil supports View Layouts.
+
+Given a layout template, add the placeholder `yield_contents` to where you want to render a nested template:
+
+```html
+(layout.html.ecr)
+
+<div>
+  <%= yield_contents %>
+</div>
+```
+
+And then reference this file in the View:
+
+```crystal
+class IndexView
+  include Soil::View
+
+  def render(io : IO)
+    render_template io, "index.html.ecr", "index.html.ecr"
+  end
+end
+```
+
+The contents of `index.html.ecr` will replace `<%= yield_contents %>` in the layout.
 
 ### Configuration
 

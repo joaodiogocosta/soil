@@ -15,7 +15,9 @@ private class ExampleView
     @name = data[:name]
   end
 
-  template "spec/examples/http/example.html.ecr"
+  def render(io : IO)
+    render_template io, "spec/examples/http/example.html.ecr"
+  end
 end
 
 describe Soil::Http::Response do
