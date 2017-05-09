@@ -462,7 +462,7 @@ class IndexView
   include Soil::View
 
   def render(io : IO)
-    render_template io, "index.html.ecr", layout: "index.html.ecr"
+    render_template io, "index.html.ecr", layout: "layout.html.ecr"
   end
 end
 ```
