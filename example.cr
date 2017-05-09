@@ -1,6 +1,8 @@
 require "./src/soil"
 
-class PostsIndexAction < Soil::Action
+class PostsIndexAction
+  include Soil::Action
+
   def call(req, res)
     p "PostsIndexAction"
   end

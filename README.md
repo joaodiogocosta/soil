@@ -105,10 +105,12 @@ end
 
 #### Action
 
-`Action` is a basic class that inherit from `Soil::Action`, which is just an absctract class that ensures that a `call` method is implemented:
+An `Action` is a plain Crystal object that includes `Soil::Action`, which is a module that ensures a proper `call` method is implemented:
 
 ```crystal
-class PostsIndexAction < Soil::Action
+class PostsIndexAction
+  include Soil::Action
+
   def call(req, res)
     posts = [...]
     res.json(posts)
@@ -123,7 +125,9 @@ end
 This is particularly useful for endpoints that incorporate a considerable amount of operations, such as an enpoint that creates a new User account:
 
 ```crystal
-class CreateUserAction < Soil::Action
+class CreateUserAction
+  include Soil::Action
+
   def initialize
     @email_sender = EmailSender.new
   end
@@ -163,13 +167,17 @@ end
 Routes can have multiple handlers. `Proc` and `Action` can be combined in arrays:
 
 ```crystal
-class LogAction < Soil::Action
+class LogAction
+  include Soil::Action
+
   def call(req, res)
     # Log something to STDOUT
   end
 end
 
-class PostsIndexAction < Soil::Action
+class PostsIndexAction
+  include Soil::Action
+
   def call(req, res)
     posts = [...]
     res.json(posts)
