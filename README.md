@@ -387,7 +387,7 @@ This will generate the following routes:
 
 `GET /blog/posts/:post_id/comments`
 
-### Views and Layouts
+## Views and Layouts
 
 Views and templating engines are a crucial part of every web framework. Soil's approach is to provide enough flexibility to the developer while enforcing good practices, such as having a reasonably well-defined data structure.
 
@@ -441,7 +441,7 @@ The result will be:
 <p>I love Crystal!<p>
 ```
 
-#### Layouts
+### Layouts
 
 Soil supports View Layouts.
 
@@ -469,7 +469,7 @@ end
 
 The contents of `index.html.ecr` will replace `<%= yield_contents %>` in the layout.
 
-### Configuration
+## Configuration
 
 As of now, Soil accepts configuration options for the following parameters:
 
