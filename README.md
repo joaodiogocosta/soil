@@ -264,7 +264,7 @@ This method will set the `Content-Type` header to `application/json`.
 
 #### Render Templates
 
-Render any template (HTML or others) by calling `render` on the response object and passing any `View` class. Read more about views [here](#views).
+Render any template (HTML or others) by calling `render` on the response object and passing any `View` class. Read more about views [here](#views-and-layouts).
 
 ```crystal
 class MyApp < Soil::App
