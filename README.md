@@ -65,6 +65,7 @@ $ crystal blog_app.cr
   * [Namespaces](#namespaces)
   * [Nested Routes](#nested-routes)
 * [Views and Layouts](#views-and-layouts)
+* [Static Files](#static-files)
 * [Configuration](#configuration)
 
 ## Routes
@@ -469,6 +470,26 @@ end
 
 The contents of `index.html.ecr` will replace `<%= yield_contents %>` in the layout.
 
+## Static Files
+
+To serve static files just enable the following configuration option:
+
+```crystal
+class MyApp < Soil::App
+  configure do |config|
+    config.serve_static_files = true
+  end
+end
+```
+
+This will serve files inside `public/`.
+
+If you want to change the public directory from which the files are served, use the configuration option `public_dir`:
+
+```crystal
+config.public_dir = "custom_dir"`
+```
+
 ## Configuration
 
 As of now, Soil accepts configuration options for the following parameters:
@@ -476,8 +497,13 @@ As of now, Soil accepts configuration options for the following parameters:
 ```crystal
 class BlogApp < Soil::App
   configure do |config|
-    config.host = "example.org"
-    config.port = "8080"
+    # Binding
+    config.host = "127.0.0.1"
+    config.port = "4000"
+
+    # Static Files
+    config.serve_static_files = false
+    config.public_dir = "public"
   end
 
   # ...
