@@ -56,6 +56,11 @@ module Soil
       @@logger
     end
 
+    def self.run
+      app = self.new
+      app.run
+    end
+
     def run
       self.class.logger.info(
         "An app emerged from soil running on #{self.class.configuration.host}:#{@server.port}"
