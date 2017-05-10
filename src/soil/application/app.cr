@@ -21,6 +21,10 @@ module Soil
         [
           HTTP::LogHandler.new,
           HTTP::ErrorHandler.new,
+          Http::Handlers::StaticFileHandler.new(
+            @@config.public_dir,
+            enabled: @@config.serve_static_files
+          ),
           Http::MainHandler.new(self.class)
         ]
       )
