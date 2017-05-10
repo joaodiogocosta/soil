@@ -13,14 +13,14 @@ module SoilSpec::Routing::Route
         route.matches?(req).should eq true
       end
 
-      it "matches root (slash only) route" do
+      it "matches root (slash only) path" do
         route = build_route("GET", "/")
 
         req = build_request("GET", "/")
         route.matches?(req).should eq true
       end
 
-      it "matches route" do
+      it "matches path" do
         route = build_route("GET", "/users")
 
         req = build_request("GET", "/posts")
@@ -28,6 +28,13 @@ module SoilSpec::Routing::Route
 
         req = build_request("GET", "/users")
         route.matches?(req).should eq true
+      end
+
+      it "matches path exactly" do
+        route = build_route("GET", "/users")
+
+        req = build_request("GET", "/users123")
+        route.matches?(req).should eq false
       end
 
       it "ignores traling slash" do

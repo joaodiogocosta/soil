@@ -57,6 +57,7 @@ module Soil
           return true if url_params?(path_reader)
           return true if trailing_slash?(path_reader)
           return true if trailing_slash_with_url_params?(path_reader)
+          return false
 
         # Named parameter
         elsif @reader.current_char == ':'
@@ -90,7 +91,7 @@ module Soil
       end
 
       # Both @reader and path_reader reached the end
-      return true if !@reader.has_next?
+      return true if !@reader.has_next? && !path_reader.has_next?
 
       # Default result is false
       false
