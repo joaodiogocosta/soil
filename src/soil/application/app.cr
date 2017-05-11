@@ -25,7 +25,7 @@ module Soil
             @@config.public_dir,
             enabled: @@config.serve_static_files
           ),
-          Http::MainHandler.new(self.class)
+          Http::Handlers::MainHandler.new(self.class)
         ]
       )
     end
