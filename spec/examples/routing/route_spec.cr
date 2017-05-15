@@ -1,38 +1,40 @@
 require "../../spec_helper"
 
+include Soil::Http
+
 describe Soil::Route do
   describe "matching" do
     it "matches HTTP method" do
-      route = build_route(Soil::Http::Method::GET, "")
+      route = build_route(Method::GET, "")
 
-      req = build_request(Soil::Http::Method::POST, "")
+      req = build_request(Method::POST, "")
       route.matches?(req).should eq false
 
-      req = build_request(Soil::Http::Method::GET, "")
+      req = build_request(Method::GET, "")
       route.matches?(req).should eq true
     end
 
     it "matches root (slash only) path" do
-      route = build_route(Soil::Http::Method::GET, "/")
+      route = build_route(Method::GET, "/")
 
-      req = build_request(Soil::Http::Method::GET, "/")
+      req = build_request(Method::GET, "/")
       route.matches?(req).should eq true
     end
 
     it "matches path" do
-      route = build_route(Soil::Http::Method::GET, "/users")
+      route = build_route(Method::GET, "/users")
 
-      req = build_request(Soil::Http::Method::GET, "/posts")
+      req = build_request(Method::GET, "/posts")
       route.matches?(req).should eq false
 
-      req = build_request(Soil::Http::Method::GET, "/users")
+      req = build_request(Method::GET, "/users")
       route.matches?(req).should eq true
     end
 
     it "matches path exactly" do
-      route = build_route(Soil::Http::Method::GET, "/users")
+      route = build_route(Method::GET, "/users")
 
-      req = build_request(Soil::Http::Method::GET, "/users123")
+      req = build_request(Method::GET, "/users123")
       route.matches?(req).should eq false
     end
 

@@ -39,7 +39,7 @@ module Soil
     end
 
     def self.mount_route(method : String, path : String, callables)
-      path = [@@namespace, path].join("/")
+      path = path_join(@@namespace, path)
       all_callables = wrap_within_self_callables(callables)
       @@router.add(method, path, all_callables)
     end
@@ -58,6 +58,12 @@ module Soil
 
     def self.logger
       @@logger
+    end
+
+    def self.path_join(*paths)
+      paths.map do |path|
+        path.lchop("/").chomp("/")
+      end.join("/")
     end
 
     def self.run
