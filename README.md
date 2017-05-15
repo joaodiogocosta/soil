@@ -61,6 +61,7 @@ $ crystal blog_app.cr
     * [Render Templates](#render-templates)
     * [Inline HTML](#inline-html)
     * [Text](#text)
+    * [Redirect](#redirect)
   * [Hooks](#hooks)
   * [Namespaces](#namespaces)
   * [Nested Routes](#nested-routes)
@@ -304,6 +305,24 @@ end
 ```
 
 This method will set the `Content-Type` header to `text/plain`.
+
+#### Redirect
+
+Use `redirect` to redirect the request to another path or url:
+
+```crystal
+class TextApp < Soil::App
+  get "/" do |req, res|
+    res.redirect("/login")
+
+    # or
+
+    res.redirect("http://google.pt")
+  end
+end
+```
+
+This method will set the status code to `302` or `303` for `GET` and `POST` requests, respectively.
 
 ### Hooks
 

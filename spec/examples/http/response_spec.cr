@@ -116,14 +116,26 @@ describe Soil::Http::Response do
       res.status_code.should eq 303
     end
 
-    it "sets the header 'Location' to the new url" do
-      res = build_response do |context, app|
-        context.request.path = "/old/path?foo=bar"
-        app.configuration.host = "example.org"
-        app.configuration.port = 3456
+    describe "with path" do
+      it "sets the header 'Location' to the constructed url" do
+        res = build_response do |context, app|
+          context.request.path = "/old/path?foo=bar"
+          app.configuration.host = "example.org"
+          app.configuration.port = 3456
+        end
+        res.redirect("/new/path")
+        res.headers["Location"].should eq "http://example.org:3456/new/path"
       end
-      res.redirect("/new/path")
-      res.headers["Location"].should eq "http://example.org:3456/new/path"
+    end
+
+    describe "with url" do
+      it "simply sets the header to the url passed as argument" do
+        res = build_response do |context, app|
+          context.request.path = "/old/path?foo=bar"
+        end
+        res.redirect("http://soil.cr/new/path")
+        res.headers["Location"].should eq "http://soil.cr/new/path"
+      end
     end
   end
 end
