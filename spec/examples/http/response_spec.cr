@@ -20,7 +20,14 @@ private class ExampleView
   end
 end
 
+include Soil::Http
+
 describe Soil::Http::Response do
+  it "is not halted by default" do
+    res = build_response
+    res.halted?.should eq false
+  end
+
   describe "#html" do
     it "sets the content type to text/html" do
       res = build_response
@@ -77,6 +84,46 @@ describe Soil::Http::Response do
       res.text("Soil says hi!")
       res.close
       io.to_s.should contain "Soil says hi!"
+    end
+  end
+
+  describe "#halt!" do
+    it "halts the response" do
+      res = build_response
+      res.halt!
+      res.halted?.should eq true
+    end
+  end
+
+  describe "#redirect" do
+    it "halts the response" do
+      res = build_response
+      res.redirect("/")
+      res.halted?.should eq true
+    end
+
+    it "sets the status code to 302 if method is GET" do
+      res = build_response
+      res.redirect("/")
+      res.status_code.should eq 302
+    end
+
+    it "sets the status code to 303 if method is other than GET" do
+      res = build_response do |context, _|
+        context.request.method = Method::POST
+      end
+      res.redirect("/")
+      res.status_code.should eq 303
+    end
+
+    it "sets the header 'Location' to the new url" do
+      res = build_response do |context, app|
+        context.request.path = "/old/path?foo=bar"
+        app.configuration.host = "example.org"
+        app.configuration.port = 3456
+      end
+      res.redirect("/new/path")
+      res.headers["Location"].should eq "http://example.org:3456/new/path"
     end
   end
 end

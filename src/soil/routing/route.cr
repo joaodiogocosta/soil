@@ -18,7 +18,10 @@ module Soil
     end
 
     def call(request, response)
-      @callables.each &.call(request, response)
+      @callables.each do |callable|
+        return if response.halted?
+        callable.call(request, response)
+      end
     end
 
     private def build_reader(path)
