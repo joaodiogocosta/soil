@@ -17,6 +17,10 @@ module Soil
     define_http_method "get"
     define_http_method "post"
 
+    def mount(mountable_class : App.class)
+      mount("", mountable_class)
+    end
+
     def mount(path : String, mountable_class : App.class)
       mountable_class.routes.each do |route|
         mount_route(route.method, path + route.path, route.callables)
