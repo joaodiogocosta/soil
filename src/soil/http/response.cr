@@ -27,13 +27,22 @@ module Soil
         view_klass.new(*data).render(response)
       end
 
-      def redirect(path)
+      def redirect(resource)
         if request.version == "HTTP/1.1" && request.method != Method::GET
           response.status_code = Status::SeeOther.code
         else
           response.status_code = Status::Found.code
         end
-        response.headers["Location"] = build_url(path)
+
+        uri = URI.parse(resource)
+        if uri.host.nil?
+          uri.scheme = find_scheme
+          uri.host = @app_class.configuration.host
+          uri.port = @app_class.configuration.port
+          uri.path = resource
+        end
+
+        response.headers["Location"] = uri.to_s
         halt!
       end
 
@@ -51,15 +60,6 @@ module Soil
 
       private def request
         @context.request
-      end
-
-      private def build_url(path)
-        URI.new(
-          scheme: find_scheme,
-          host: @app_class.configuration.host,
-          port: @app_class.configuration.port,
-          path: path
-        ).to_s
       end
 
       private def find_scheme
