@@ -411,11 +411,11 @@ This will generate the following routes:
 
 Views and templating engines are a crucial part of every web framework. Soil's approach is to provide enough flexibility to the developer while enforcing good practices, such as having a reasonably well-defined data structure.
 
-# The easy way, ideal for simple templates
+### The easy way, ideal for simple templates
 
 Soil has a built-in helper to render templates. It is available in regular routes and also in any Action subclasses.
 
-```
+```crystal
 class MyApp < Soil::App
   get "/" do |req, res|
     render_template res, "index.html.ecr"
@@ -431,7 +431,7 @@ Then create a new file which is the actual template. Soil uses Crystal's built-i
 <p>I Love <%= name %>!</p>
 ```
 
-# The preferred way, ideal for templates with dynamic data
+### The preferred way, ideal for templates with dynamic data
 
 Declare a new class that will act as the data container for the view template:
 
