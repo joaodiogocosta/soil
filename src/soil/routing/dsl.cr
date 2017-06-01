@@ -1,15 +1,15 @@
 module Soil
   module RoutingDSL
     macro define_http_method(verb)
-      def {{ verb.id.downcase }}(path : String, &handler : Http::Request, Http::Response ->)
+      def {{ verb.id.downcase }}(path, &handler : Http::Request, Http::Response ->)
         mount_route({{ verb.upcase }}, path, [handler])
       end
 
-      def {{ verb.id.downcase }}(path : String, handler : Action)
+      def {{ verb.id.downcase }}(path, handler : Action)
         mount_route({{ verb.upcase }}, path, [handler])
       end
 
-      def {{ verb.id.downcase }}(path : String, handlers : Array(Handler))
+      def {{ verb.id.downcase }}(path, handlers : Array(Handler))
         mount_route({{ verb.upcase }}, path, handlers)
       end
     end
@@ -21,9 +21,9 @@ module Soil
       mount("", mountable_class)
     end
 
-    def mount(path : String, mountable_class : App.class)
+    def mount(path, mountable_class : App.class)
       mountable_class.routes.each do |route|
-        mount_route(route.method, path + route.path, route.callables)
+        mount_route(route.method, path.to_s + route.path, route.callables)
       end
     end
   end

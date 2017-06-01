@@ -38,8 +38,8 @@ module Soil
       before_hooks + callables + after_hooks
     end
 
-    def self.mount_route(method : String, path : String, callables)
-      path = path_join(@@namespace, path)
+    def self.mount_route(method : String, path, callables)
+      path = path_join(@@namespace, path.to_s)
       all_callables = wrap_within_self_callables(callables)
       @@router.add(method, path, all_callables)
     end
