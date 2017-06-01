@@ -2,6 +2,7 @@ require "http/server"
 require "logger"
 require "json"
 
+require "./soil/templating/**"
 require "./soil/config"
 require "./soil/http/**"
 require "./soil/routing/**"
