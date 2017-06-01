@@ -6,6 +6,7 @@ module Soil
     extend HooksDSL
     extend RoutingDSL
     extend ConfigDSL
+    include Templating::Macros
 
     @@namespace = ""
     @@before_hooks = [] of Http::Request, Http::Response ->

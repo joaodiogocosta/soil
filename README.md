@@ -411,7 +411,19 @@ This will generate the following routes:
 
 Views and templating engines are a crucial part of every web framework. Soil's approach is to provide enough flexibility to the developer while enforcing good practices, such as having a reasonably well-defined data structure.
 
-First create a new file that will act as the template. Soil uses Crystal's built-in templating engine [ECR](https://crystal-lang.org/api/ECR.html):
+# The easy way, ideal for simple templates
+
+Soil has a built-in helper to render templates. It is available in regular routes and also in any Action subclasses.
+
+```
+class MyApp < Soil::App
+  get "/" do |req, res|
+    render_template res, "index.html.ecr"
+  end
+end
+```
+
+Then create a new file which is the actual template. Soil uses Crystal's built-in templating engine [ECR](https://crystal-lang.org/api/ECR.html):
 
 ```html
 (index.html.ecr)
@@ -419,8 +431,9 @@ First create a new file that will act as the template. Soil uses Crystal's built
 <p>I Love <%= name %>!</p>
 ```
 
-Then declare a new class that will act as the data container for the view
-template:
+# The preferred way, ideal for templates with dynamic data
+
+Declare a new class that will act as the data container for the view template:
 
 ```crystal
 class IndexView
@@ -440,8 +453,7 @@ class IndexView
 end
 ```
 
-It's mandatory to implement a `render(io : IO)` method. You can return whatever
-you want, in this case we will return a pre-compiled template.
+It's mandatory to implement a `render(io : IO)` method. You can return whatever you want, in this case we will return a pre-compiled template.
 
 Views are plain Crystal objects, you are free to implement them as you find more suitable to your needs, just remember to make publicly accessible the methods that are used in the template (`name` in this case).
 

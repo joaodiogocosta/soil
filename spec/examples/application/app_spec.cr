@@ -4,6 +4,11 @@ include Soil
 
 private class ChildApp < App; end
 private class ExampleApp < App; end
+private class TemplateApp < App
+  get "" do |_, res|
+    render_template res, "spec/support/files/template.html.ecr"
+  end
+end
 private class ExampleAction
   include Action
 
@@ -104,6 +109,17 @@ describe App do
 
       ExampleApp.mount(ChildApp)
       ExampleApp.routes.size.should eq number_of_routes + number_of_child_routes
+    end
+  end
+
+  context "#templating" do
+    it "has template rendering capabilities" do
+      request = build_request(Method::GET, "")
+      io = IO::Memory.new
+      response = build_response(io)
+      TemplateApp.routes.first.call(request, response)
+      response.close
+      io.to_s.should contain "Hello, Soil!"
     end
   end
 end
