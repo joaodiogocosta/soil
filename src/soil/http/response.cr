@@ -7,6 +7,11 @@ module Soil
         @halted = false
       end
 
+      def status(status_code : Int32)
+        response.status_code = status_code
+        self
+      end
+
       def html(text)
         response.content_type = Soil::Http::ContentTypes.html
         response << text

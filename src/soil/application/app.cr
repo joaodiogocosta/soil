@@ -21,7 +21,7 @@ module Soil
         @@config.port,
         [
           HTTP::LogHandler.new,
-          HTTP::ErrorHandler.new,
+          # HTTP::ErrorHandler.new,
           Http::Handlers::StaticFileHandler.new(
             @@config.public_dir,
             enabled: @@config.serve_static_files

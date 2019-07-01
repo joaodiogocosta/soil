@@ -1,7 +1,10 @@
 require "http/server"
 require "logger"
 require "json"
+require "inflector"
 
+require "./soil/relational"
+# require "./soil/persistence"
 require "./soil/templating/**"
 require "./soil/config"
 require "./soil/http/**"

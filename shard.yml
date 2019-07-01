@@ -4,4 +4,13 @@ version: 0.0.2
 authors:
     - João Diogo Costa
 
+dependencies:
+  pg:
+    github: will/crystal-pg
+  sam:
+    github: imdrasil/sam.cr
+  inflector:
+    github: phoffer/inflector.cr
+
 license: MIT
+
